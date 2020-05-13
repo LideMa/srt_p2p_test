@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04C9FA57246BD62300508F8D /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C9FA56246BD62300508F8D /* HomeViewController.m */; };
 		04D43483246965FB003839A7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D43482246965FB003839A7 /* AppDelegate.m */; };
 		04D43486246965FB003839A7 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D43485246965FB003839A7 /* SceneDelegate.m */; };
 		04D43489246965FB003839A7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D43488246965FB003839A7 /* ViewController.m */; };
@@ -33,6 +34,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04C9FA4F246BD36C00508F8D /* srt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = srt.h; sourceTree = "<group>"; };
+		04C9FA50246BD37E00508F8D /* srt4udt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = srt4udt.h; sourceTree = "<group>"; };
+		04C9FA51246BD39300508F8D /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
+		04C9FA52246BD3A800508F8D /* platform_sys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform_sys.h; sourceTree = "<group>"; };
+		04C9FA53246BD3BD00508F8D /* logging_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logging_api.h; sourceTree = "<group>"; };
+		04C9FA55246BD62300508F8D /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		04C9FA56246BD62300508F8D /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		04D4347E246965FB003839A7 /* SRTTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SRTTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04D43481246965FB003839A7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		04D43482246965FB003839A7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -60,6 +68,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04C9FA4E246BD35500508F8D /* srt_header */ = {
+			isa = PBXGroup;
+			children = (
+				04C9FA52246BD3A800508F8D /* platform_sys.h */,
+				04C9FA51246BD39300508F8D /* version.h */,
+				04C9FA4F246BD36C00508F8D /* srt.h */,
+				04C9FA50246BD37E00508F8D /* srt4udt.h */,
+				04C9FA53246BD3BD00508F8D /* logging_api.h */,
+			);
+			path = srt_header;
+			sourceTree = "<group>";
+		};
+		04C9FA54246BD4AB00508F8D /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
 		04D43475246965FB003839A7 = {
 			isa = PBXGroup;
 			children = (
@@ -80,12 +107,16 @@
 		04D43480246965FB003839A7 /* SRTTest */ = {
 			isa = PBXGroup;
 			children = (
+				04C9FA54246BD4AB00508F8D /* Camera */,
+				04C9FA4E246BD35500508F8D /* srt_header */,
 				04D43481246965FB003839A7 /* AppDelegate.h */,
 				04D43482246965FB003839A7 /* AppDelegate.m */,
 				04D43484246965FB003839A7 /* SceneDelegate.h */,
 				04D43485246965FB003839A7 /* SceneDelegate.m */,
 				04D43487246965FB003839A7 /* ViewController.h */,
 				04D43488246965FB003839A7 /* ViewController.m */,
+				04C9FA55246BD62300508F8D /* HomeViewController.h */,
+				04C9FA56246BD62300508F8D /* HomeViewController.m */,
 				04D4348A246965FB003839A7 /* Main.storyboard */,
 				04D4348D246965FC003839A7 /* Assets.xcassets */,
 				04D4348F246965FC003839A7 /* LaunchScreen.storyboard */,
@@ -177,6 +208,7 @@
 				04D43489246965FB003839A7 /* ViewController.m in Sources */,
 				04D43483246965FB003839A7 /* AppDelegate.m in Sources */,
 				04D43494246965FC003839A7 /* main.m in Sources */,
+				04C9FA57246BD62300508F8D /* HomeViewController.m in Sources */,
 				04D43486246965FB003839A7 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
