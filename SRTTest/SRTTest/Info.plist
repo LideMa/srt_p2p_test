@@ -60,5 +60,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>是否允许使用你的相机？</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>是否允许访问你的麦克风？</string>
 </dict>
 </plist>

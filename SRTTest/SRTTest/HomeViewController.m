@@ -7,8 +7,11 @@
 //
 
 #import "HomeViewController.h"
+#import "CameraDetailViewController.h"
 
-@interface HomeViewController ()
+@interface HomeViewController () {
+    UIButton    *_createButton;
+}
 
 @end
 
@@ -19,6 +22,19 @@
     // Do any additional setup after loading the view.
     self.title = @"Home";
     self.view.backgroundColor = [UIColor whiteColor];
+
+    _createButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _createButton.frame = CGRectMake(40, 100, 100, 40);
+    _createButton.backgroundColor = [UIColor blackColor];
+    [_createButton setTitle:@"Create" forState:UIControlStateNormal];
+    [_createButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_createButton addTarget:self action:@selector(clickCreateButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_createButton];
+}
+
+- (void)clickCreateButton:(id)sender {
+    CameraDetailViewController *cameraDetailVC = [[CameraDetailViewController alloc] init];
+    [self.navigationController pushViewController:cameraDetailVC animated:YES];
 }
 
 /*
