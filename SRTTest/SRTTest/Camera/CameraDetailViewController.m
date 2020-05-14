@@ -19,9 +19,11 @@
     LMVideoHardEncoder   *_videoEncoder;
     LMAudioEncoder       *_audioEncoder;
 
+    UIButton        *_connectButton;
     UIButton        *_pushButton;
 }
 
+@property (nonatomic, assign) BOOL isCapture;
 @property (nonatomic, assign) BOOL isPush;
 
 @end
@@ -48,6 +50,14 @@
     [_startButton addTarget:self action:@selector(clickStartButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_startButton];
 
+    _connectButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _connectButton.frame = CGRectMake(160, 100, 100, 40);
+    _connectButton.backgroundColor = [UIColor blackColor];
+    [_connectButton setTitle:@"Connect" forState:UIControlStateNormal];
+    [_connectButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_connectButton addTarget:self action:@selector(clickConnectButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_connectButton];
+
     _pushButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _pushButton.frame = CGRectMake(40, 160, 100, 40);
     _pushButton.backgroundColor = [UIColor blackColor];
@@ -58,12 +68,24 @@
 }
 
 - (void)clickStartButton:(id)sender {
+    if (_isCapture) {
+        return;
+    }
+    _isCapture = YES;
     [_videoCamera startCameraCapture];
 }
 
+- (void)clickConnectButton:(id)sender {
+    
+}
+
 - (void)clickPushButton:(id)sender {
-    _audioEncoder = [[LMAudioEncoder alloc] initWithAudioSettings:_videoCamera.recommendedAudioSettings];
+    if (_isPush) {
+        return;
+    }
     _isPush = YES;
+    _audioEncoder = [[LMAudioEncoder alloc] initWithAudioSettings:_videoCamera.recommendedAudioSettings];
+    _videoEncoder = [[LMVideoHardEncoder alloc] initWithVideoSettings:_videoCamera.recommendedVideoSettings];
 }
 
 /*
@@ -99,7 +121,7 @@
 }
 
 - (void)videoCameraDidOutputVideoBuffer:(CMSampleBufferRef)videoBuffer {
-
+    [_videoEncoder encodeWithVideoBuffer:videoBuffer];
 }
 
 @end

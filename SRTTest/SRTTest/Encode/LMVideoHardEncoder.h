@@ -7,10 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LMVideoHardEncoder : NSObject
+
+- (id)initWithVideoSettings:(NSDictionary *)videoSettings;
+- (void)encodeWithVideoBuffer:(CMSampleBufferRef)videoBuffer;
 
 @end
 
