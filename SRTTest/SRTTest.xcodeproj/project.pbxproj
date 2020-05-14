@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04072774246CE799003E24CD /* LMAudioEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 04072773246CE799003E24CD /* LMAudioEncoder.m */; };
 		04C9FA57246BD62300508F8D /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C9FA56246BD62300508F8D /* HomeViewController.m */; };
 		04C9FA5A246BD8DB00508F8D /* CameraDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C9FA59246BD8DB00508F8D /* CameraDetailViewController.m */; };
 		04C9FA5D246BDA6800508F8D /* LMVideoCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C9FA5C246BDA6800508F8D /* LMVideoCamera.m */; };
+		04C9FA62246C1C7000508F8D /* LMVideoHardEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C9FA61246C1C7000508F8D /* LMVideoHardEncoder.m */; };
 		04D43483246965FB003839A7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D43482246965FB003839A7 /* AppDelegate.m */; };
 		04D43486246965FB003839A7 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D43485246965FB003839A7 /* SceneDelegate.m */; };
 		04D43489246965FB003839A7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D43488246965FB003839A7 /* ViewController.m */; };
@@ -36,6 +38,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04072772246CE799003E24CD /* LMAudioEncoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LMAudioEncoder.h; sourceTree = "<group>"; };
+		04072773246CE799003E24CD /* LMAudioEncoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LMAudioEncoder.m; sourceTree = "<group>"; };
 		04C9FA4F246BD36C00508F8D /* srt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = srt.h; sourceTree = "<group>"; };
 		04C9FA50246BD37E00508F8D /* srt4udt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = srt4udt.h; sourceTree = "<group>"; };
 		04C9FA51246BD39300508F8D /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
@@ -47,6 +51,8 @@
 		04C9FA59246BD8DB00508F8D /* CameraDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraDetailViewController.m; sourceTree = "<group>"; };
 		04C9FA5B246BDA6800508F8D /* LMVideoCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LMVideoCamera.h; sourceTree = "<group>"; };
 		04C9FA5C246BDA6800508F8D /* LMVideoCamera.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LMVideoCamera.m; sourceTree = "<group>"; };
+		04C9FA60246C1C7000508F8D /* LMVideoHardEncoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LMVideoHardEncoder.h; sourceTree = "<group>"; };
+		04C9FA61246C1C7000508F8D /* LMVideoHardEncoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LMVideoHardEncoder.m; sourceTree = "<group>"; };
 		04D4347E246965FB003839A7 /* SRTTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SRTTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04D43481246965FB003839A7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		04D43482246965FB003839A7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -97,6 +103,24 @@
 			path = Camera;
 			sourceTree = "<group>";
 		};
+		04C9FA5E246C0EB500508F8D /* Encode */ = {
+			isa = PBXGroup;
+			children = (
+				04C9FA60246C1C7000508F8D /* LMVideoHardEncoder.h */,
+				04C9FA61246C1C7000508F8D /* LMVideoHardEncoder.m */,
+				04072772246CE799003E24CD /* LMAudioEncoder.h */,
+				04072773246CE799003E24CD /* LMAudioEncoder.m */,
+			);
+			path = Encode;
+			sourceTree = "<group>";
+		};
+		04C9FA5F246C0EB500508F8D /* Decode */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Decode;
+			sourceTree = "<group>";
+		};
 		04D43475246965FB003839A7 = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +141,8 @@
 		04D43480246965FB003839A7 /* SRTTest */ = {
 			isa = PBXGroup;
 			children = (
+				04C9FA5F246C0EB500508F8D /* Decode */,
+				04C9FA5E246C0EB500508F8D /* Encode */,
 				04C9FA54246BD4AB00508F8D /* Camera */,
 				04C9FA4E246BD35500508F8D /* srt_header */,
 				04D43481246965FB003839A7 /* AppDelegate.h */,
@@ -216,8 +242,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				04D43489246965FB003839A7 /* ViewController.m in Sources */,
+				04072774246CE799003E24CD /* LMAudioEncoder.m in Sources */,
 				04D43483246965FB003839A7 /* AppDelegate.m in Sources */,
 				04C9FA5A246BD8DB00508F8D /* CameraDetailViewController.m in Sources */,
+				04C9FA62246C1C7000508F8D /* LMVideoHardEncoder.m in Sources */,
 				04D43494246965FC003839A7 /* main.m in Sources */,
 				04C9FA57246BD62300508F8D /* HomeViewController.m in Sources */,
 				04C9FA5D246BDA6800508F8D /* LMVideoCamera.m in Sources */,

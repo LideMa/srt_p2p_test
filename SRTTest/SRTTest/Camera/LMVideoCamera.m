@@ -7,7 +7,6 @@
 //
 
 #import "LMVideoCamera.h"
-#import <AVFoundation/AVFoundation.h>
 
 @interface LMVideoCamera () <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate> {
     AVCaptureSession    *_captureSession;
@@ -70,7 +69,7 @@
         if ([_captureSession canAddOutput:_videoOutput]) {
             [_captureSession addOutput:_videoOutput];
         }
-        [_captureSession setSessionPreset:AVCaptureSessionPreset1280x720];
+        [_captureSession setSessionPreset:AVCaptureSessionPreset1920x1080];
 
         AVCaptureConnection *connection = [_videoOutput connectionWithMediaType:AVMediaTypeVideo];
         connection.videoOrientation = AVCaptureVideoOrientationPortrait;
@@ -90,6 +89,9 @@
         }
         [_audioOutput setSampleBufferDelegate:self queue:_audioProcessingQueue];
 
+        self.recommendedVideoSettings = [_videoOutput recommendedVideoSettingsForAssetWriterWithOutputFileType:AVFileTypeQuickTimeMovie];
+        self.recommendedAudioSettings = [_audioOutput recommendedAudioSettingsForAssetWriterWithOutputFileType:AVFileTypeAIFF];
+
         [_captureSession commitConfiguration];
     }
 
@@ -97,12 +99,7 @@
 }
 
 - (void)dealloc {
-    [self stopCameraCapture];
-
-    [_videoOutput setSampleBufferDelegate:nil queue:dispatch_get_main_queue()];
-    [_audioOutput setSampleBufferDelegate:nil queue:dispatch_get_main_queue()];
-
-    [self removeInputsAndOutputs];
+    [self destory];
 }
 
 - (void)removeInputsAndOutputs {
@@ -153,6 +150,16 @@
     }
 }
 
+- (void)destory {
+    self.delegate = nil;
+    [self stopCameraCapture];
+
+    [_videoOutput setSampleBufferDelegate:nil queue:dispatch_get_main_queue()];
+    [_audioOutput setSampleBufferDelegate:nil queue:dispatch_get_main_queue()];
+
+    [self removeInputsAndOutputs];
+}
+
 #pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
@@ -160,13 +167,19 @@
         return;
     } else {
         if (output == _audioOutput) {
-
+            if (self.delegate && [self.delegate respondsToSelector:@selector(videoCameraDidOutputAudioBuffer:)]) {
+                [self.delegate videoCameraDidOutputAudioBuffer:sampleBuffer];
+            }
         } else {
             if (self.displayLayer != nil && [self.displayLayer isReadyForMoreMediaData]) {
                 [self.displayLayer enqueueSampleBuffer:sampleBuffer];
             }
 
             [self.displayLayer flush];
+
+            if (self.delegate && [self.delegate respondsToSelector:@selector(videoCameraDidOutputVideoBuffer:)]) {
+                [self.delegate videoCameraDidOutputVideoBuffer:sampleBuffer];
+            }
         }
     }
 }

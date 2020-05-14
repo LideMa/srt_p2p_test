@@ -8,12 +8,21 @@
 
 #import "CameraDetailViewController.h"
 #import "LMVideoCamera.h"
+#import "LMVideoHardEncoder.h"
+#import "LMAudioEncoder.h"
 
-@interface CameraDetailViewController () {
+@interface CameraDetailViewController () <LMVideoCameraDelegate> {
     LMVideoCamera   *_videoCamera;
     UIButton        *_startButton;
     UIView          *_previewView;
+
+    LMVideoHardEncoder   *_videoEncoder;
+    LMAudioEncoder       *_audioEncoder;
+
+    UIButton        *_pushButton;
 }
+
+@property (nonatomic, assign) BOOL isPush;
 
 @end
 
@@ -29,6 +38,7 @@
     _previewView = [[UIView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:_previewView];
     [_videoCamera setPreviewView:_previewView];
+    _videoCamera.delegate = self;
 
     _startButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _startButton.frame = CGRectMake(40, 100, 100, 40);
@@ -37,10 +47,23 @@
     [_startButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_startButton addTarget:self action:@selector(clickStartButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_startButton];
+
+    _pushButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _pushButton.frame = CGRectMake(40, 160, 100, 40);
+    _pushButton.backgroundColor = [UIColor blackColor];
+    [_pushButton setTitle:@"Push" forState:UIControlStateNormal];
+    [_pushButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_pushButton addTarget:self action:@selector(clickPushButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_pushButton];
 }
 
 - (void)clickStartButton:(id)sender {
     [_videoCamera startCameraCapture];
+}
+
+- (void)clickPushButton:(id)sender {
+    _audioEncoder = [[LMAudioEncoder alloc] initWithAudioSettings:_videoCamera.recommendedAudioSettings];
+    _isPush = YES;
 }
 
 /*
@@ -52,5 +75,31 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark - LMVideoCameraDelegate
+
+- (void)videoCameraDidOutputAudioBuffer:(CMSampleBufferRef)audioBuffer {
+    if (!_isPush) {
+        return;
+    }
+
+    CFRetain(audioBuffer);
+
+    AudioBufferList audioBufferList;
+    CMBlockBufferRef blockBuffer;
+
+    CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(audioBuffer, NULL, &audioBufferList, sizeof(audioBufferList), NULL, NULL, 0, &blockBuffer);
+
+    CFRelease(blockBuffer);
+
+    NSData *data = [_audioEncoder encodeWithAudioBufferList:&audioBufferList];
+    if (data != nil) {
+        // push
+    }
+}
+
+- (void)videoCameraDidOutputVideoBuffer:(CMSampleBufferRef)videoBuffer {
+
+}
 
 @end
