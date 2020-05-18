@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "srt.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    SRT_ERRNO result = srt_startup();
+    if (result != SRT_SUCCESS) {
+        NSLog(@"failed to start srt");
+    }
     return YES;
 }
 

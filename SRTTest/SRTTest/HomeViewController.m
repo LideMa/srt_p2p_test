@@ -8,9 +8,14 @@
 
 #import "HomeViewController.h"
 #import "CameraDetailViewController.h"
+#import "LMP2PClient.h"
 
 @interface HomeViewController () {
     UIButton    *_createButton;
+    UIButton    *_connectButton;
+    LMP2PClient *_client;
+    UILabel     *_localAddressLabel;
+    UITextField *_ipTextField;
 }
 
 @end
@@ -30,11 +35,60 @@
     [_createButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_createButton addTarget:self action:@selector(clickCreateButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_createButton];
+
+    _connectButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _connectButton.frame = CGRectMake(40, 160, 100, 40);
+    _connectButton.backgroundColor = [UIColor blackColor];
+    [_connectButton setTitle:@"Connect" forState:UIControlStateNormal];
+    [_connectButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_connectButton addTarget:self action:@selector(clickConnectButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_connectButton];
+
+    _ipTextField = [[UITextField alloc] initWithFrame:CGRectMake(160, 160, 200, 40)];
+    _ipTextField.borderStyle = UITextBorderStyleRoundedRect;
+    [self.view addSubview:_ipTextField];
+
+    UITapGestureRecognizer *tapView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapView:)];
+    [self.view addGestureRecognizer:tapView];
+
+    _client = [[LMP2PClient alloc] init];
+    _localAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 220, 300, 40)];
+    _localAddressLabel.backgroundColor = [UIColor clearColor];
+    _localAddressLabel.textColor = [UIColor blackColor];
+    [self.view addSubview:_localAddressLabel];
+
+    [self showLocalAddress];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    [self.view endEditing:YES];
 }
 
 - (void)clickCreateButton:(id)sender {
     CameraDetailViewController *cameraDetailVC = [[CameraDetailViewController alloc] init];
     [self.navigationController pushViewController:cameraDetailVC animated:YES];
+}
+
+- (void)clickConnectButton:(id)sender {
+    NSString *address = _ipTextField.text;
+    BOOL success = [_client connectWithAddress:address];
+    if (!success) {
+        
+    }
+}
+
+- (void)showLocalAddress {
+    _localAddressLabel.text = [_client getLocalAddress];
+}
+
+- (void)tapView:(UITapGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer.view == self.view) {
+        if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+            [self.view endEditing:YES];
+        }
+    }
 }
 
 /*

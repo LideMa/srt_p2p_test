@@ -7,7 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "srt.h"
 
 @interface ViewController () {
     UILabel     *_titleLabel;
@@ -26,8 +25,6 @@
     _titleLabel.textColor = [UIColor blackColor];
     _titleLabel.text = @"SRT_TEST";
     [self.view addSubview:_titleLabel];
-
-    srt_startup();
 }
 
 

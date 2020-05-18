@@ -19,7 +19,6 @@
     LMVideoHardEncoder   *_videoEncoder;
     LMAudioEncoder       *_audioEncoder;
 
-    UIButton        *_connectButton;
     UIButton        *_pushButton;
 }
 
@@ -50,14 +49,6 @@
     [_startButton addTarget:self action:@selector(clickStartButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_startButton];
 
-    _connectButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _connectButton.frame = CGRectMake(160, 100, 100, 40);
-    _connectButton.backgroundColor = [UIColor blackColor];
-    [_connectButton setTitle:@"Connect" forState:UIControlStateNormal];
-    [_connectButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_connectButton addTarget:self action:@selector(clickConnectButton:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_connectButton];
-
     _pushButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _pushButton.frame = CGRectMake(40, 160, 100, 40);
     _pushButton.backgroundColor = [UIColor blackColor];
@@ -73,10 +64,6 @@
     }
     _isCapture = YES;
     [_videoCamera startCameraCapture];
-}
-
-- (void)clickConnectButton:(id)sender {
-    
 }
 
 - (void)clickPushButton:(id)sender {

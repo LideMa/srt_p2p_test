@@ -10,6 +10,8 @@
 		04072774246CE799003E24CD /* LMAudioEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 04072773246CE799003E24CD /* LMAudioEncoder.m */; };
 		04072777246D6AFC003E24CD /* LMVideoHardDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 04072776246D6AFC003E24CD /* LMVideoHardDecoder.m */; };
 		0407277A246D6B13003E24CD /* LMAudioDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 04072779246D6B13003E24CD /* LMAudioDecoder.m */; };
+		04C8CCFC246E4702005C81D2 /* LMP2PClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C8CCFB246E4702005C81D2 /* LMP2PClient.m */; };
+		04C8CCFF246E6B2F005C81D2 /* LMP2PSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C8CCFE246E6B2F005C81D2 /* LMP2PSocket.mm */; };
 		04C9FA57246BD62300508F8D /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C9FA56246BD62300508F8D /* HomeViewController.m */; };
 		04C9FA5A246BD8DB00508F8D /* CameraDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C9FA59246BD8DB00508F8D /* CameraDetailViewController.m */; };
 		04C9FA5D246BDA6800508F8D /* LMVideoCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C9FA5C246BDA6800508F8D /* LMVideoCamera.m */; };
@@ -46,6 +48,10 @@
 		04072776246D6AFC003E24CD /* LMVideoHardDecoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LMVideoHardDecoder.m; sourceTree = "<group>"; };
 		04072778246D6B13003E24CD /* LMAudioDecoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LMAudioDecoder.h; sourceTree = "<group>"; };
 		04072779246D6B13003E24CD /* LMAudioDecoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LMAudioDecoder.m; sourceTree = "<group>"; };
+		04C8CCFA246E4702005C81D2 /* LMP2PClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LMP2PClient.h; sourceTree = "<group>"; };
+		04C8CCFB246E4702005C81D2 /* LMP2PClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LMP2PClient.m; sourceTree = "<group>"; };
+		04C8CCFD246E6B2F005C81D2 /* LMP2PSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LMP2PSocket.h; sourceTree = "<group>"; };
+		04C8CCFE246E6B2F005C81D2 /* LMP2PSocket.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LMP2PSocket.mm; sourceTree = "<group>"; };
 		04C9FA4F246BD36C00508F8D /* srt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = srt.h; sourceTree = "<group>"; };
 		04C9FA50246BD37E00508F8D /* srt4udt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = srt4udt.h; sourceTree = "<group>"; };
 		04C9FA51246BD39300508F8D /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
@@ -86,6 +92,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04C8CCF9246E397D005C81D2 /* Transfer */ = {
+			isa = PBXGroup;
+			children = (
+				04C8CCFA246E4702005C81D2 /* LMP2PClient.h */,
+				04C8CCFB246E4702005C81D2 /* LMP2PClient.m */,
+				04C8CCFD246E6B2F005C81D2 /* LMP2PSocket.h */,
+				04C8CCFE246E6B2F005C81D2 /* LMP2PSocket.mm */,
+			);
+			path = Transfer;
+			sourceTree = "<group>";
+		};
 		04C9FA4E246BD35500508F8D /* srt_header */ = {
 			isa = PBXGroup;
 			children = (
@@ -151,6 +168,7 @@
 		04D43480246965FB003839A7 /* SRTTest */ = {
 			isa = PBXGroup;
 			children = (
+				04C8CCF9246E397D005C81D2 /* Transfer */,
 				04C9FA5F246C0EB500508F8D /* Decode */,
 				04C9FA5E246C0EB500508F8D /* Encode */,
 				04C9FA54246BD4AB00508F8D /* Camera */,
@@ -260,7 +278,9 @@
 				0407277A246D6B13003E24CD /* LMAudioDecoder.m in Sources */,
 				04D43494246965FC003839A7 /* main.m in Sources */,
 				04C9FA57246BD62300508F8D /* HomeViewController.m in Sources */,
+				04C8CCFF246E6B2F005C81D2 /* LMP2PSocket.mm in Sources */,
 				04C9FA5D246BDA6800508F8D /* LMVideoCamera.m in Sources */,
+				04C8CCFC246E4702005C81D2 /* LMP2PClient.m in Sources */,
 				04D43486246965FB003839A7 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
