@@ -15,6 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *localIPAddress;
 
 - (BOOL)connectWithAddress:(NSString *)address;
+- (void)sendMessage:(NSString *)message;
+
+- (void)sendFile;
+- (void)receiveFile;
+
 - (void)closeCurrentConnection;
 
 @end

@@ -34,4 +34,16 @@
     return [_socket connectWithAddress:address];
 }
 
+- (void)sendMessage:(NSString *)message {
+    [_socket sendMessage:message];
+}
+
+- (void)sendFile {
+    [_socket sendFile];
+}
+
+- (void)receiveFile {
+    [_socket receiveFile];
+}
+
 @end

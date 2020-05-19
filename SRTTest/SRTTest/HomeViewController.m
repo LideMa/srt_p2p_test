@@ -16,6 +16,8 @@
     LMP2PClient *_client;
     UILabel     *_localAddressLabel;
     UITextField *_ipTextField;
+    UIButton    *_sendButton;
+    UIButton    *_receiveButton;
 }
 
 @end
@@ -58,6 +60,22 @@
     [self.view addSubview:_localAddressLabel];
 
     [self showLocalAddress];
+
+    _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _sendButton.frame = CGRectMake(40, 280, 100, 40);
+    _sendButton.backgroundColor = [UIColor blackColor];
+    [_sendButton setTitle:@"Send" forState:UIControlStateNormal];
+    [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_sendButton addTarget:self action:@selector(clickSendButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_sendButton];
+
+    _receiveButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _receiveButton.frame = CGRectMake(160, 280, 100, 40);
+    _receiveButton.backgroundColor = [UIColor blackColor];
+    [_receiveButton setTitle:@"Receive" forState:UIControlStateNormal];
+    [_receiveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_receiveButton addTarget:self action:@selector(clickReceiveButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_receiveButton];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -89,6 +107,14 @@
             [self.view endEditing:YES];
         }
     }
+}
+
+- (void)clickSendButton:(id)sender {
+    [_client sendFile];
+}
+
+- (void)clickReceiveButton:(id)sender {
+    [_client receiveFile];
 }
 
 /*
