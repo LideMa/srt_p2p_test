@@ -110,11 +110,11 @@
 }
 
 - (void)clickSendButton:(id)sender {
-    [_client sendFile];
+    [_client sendMessage:@"Hello, my friend!!!"];
 }
 
 - (void)clickReceiveButton:(id)sender {
-    [_client receiveFile];
+
 }
 
 /*

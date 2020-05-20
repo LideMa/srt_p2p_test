@@ -17,9 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)connectWithAddress:(NSString *)address;
 - (void)sendMessage:(NSString *)message;
 
-- (void)sendFile;
-- (void)receiveFile;
-
 - (void)closeCurrentConnection;
 
 @end

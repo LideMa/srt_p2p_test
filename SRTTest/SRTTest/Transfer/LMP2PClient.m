@@ -38,12 +38,4 @@
     [_socket sendMessage:message];
 }
 
-- (void)sendFile {
-    [_socket sendFile];
-}
-
-- (void)receiveFile {
-    [_socket receiveFile];
-}
-
 @end

@@ -76,6 +76,9 @@ struct in_addr resolveHostName(const std::string& name) {
 
 @interface LMP2PSocket () {
     SRTSOCKET   _socket;
+    SRTSOCKET   _connectSocket;
+
+    BOOL        _isConnect;
 }
 
 @property (nonatomic, strong) NSString *remoteAddress;
@@ -88,17 +91,6 @@ struct in_addr resolveHostName(const std::string& name) {
     self = [super init];
     if (self != nil) {
         srt_setloglevel(srt_logging::LogLevel::debug);
-        _socket = srt_create_socket();
-
-////        bool no = false;
-////        if (SRT_ERROR == srt_setsockopt(_socket, 0, SRTO_RCVSYN, &no, sizeof no)) {
-////            cout << "srt_setsockopt: " << srt_getlasterror_str() << endl;
-////        }
-//        int yes = 1;
-//        srt_setsockflag(_socket, SRTO_SENDER, &yes, sizeof yes);
-////        SRT_TRANSTYPE tt = SRTT_FILE;
-////        srt_setsockopt(_socket, 0, SRTO_TRANSTYPE, &tt, sizeof tt);
-
         // bind local address
         [self bindLocalAddress];
     }
@@ -107,6 +99,8 @@ struct in_addr resolveHostName(const std::string& name) {
 }
 
 - (void)bindLocalAddress {
+    _socket = srt_create_socket();
+
     std::vector<struct in_addr> localAddressArray = ::getLocalAddress();
     std::string ipAddress;
     // TODO:当前只选一个差不多能用的
@@ -143,89 +137,21 @@ struct in_addr resolveHostName(const std::string& name) {
     ss << ipAddress << ":" << randomPort;
     std::string localIPAddress = ss.str();
     self.localIPAddress = [NSString stringWithCString:localIPAddress.c_str() encoding:NSUTF8StringEncoding];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self startListen];
+    });
 }
 
 - (BOOL)connectWithAddress:(NSString *)address {
-//    if (address == nil || [address isEqualToString:@""]) {
-//        NSLog(@"failed to get ip address");
-//        return NO;
-//    }
-//    NSArray *array = [address componentsSeparatedByString:@":"];
-//    if ([array count] < 2) {
-//        NSLog(@"failed to get ip address");
-//        return NO;
-//    }
-//    NSString *remoteIPAddress = [array firstObject];
-//    unsigned short port = [[array lastObject] intValue];
-//
-//    sockaddr_in sin;
-//    memset(&sin, 0, sizeof(sin));
-//    sin.sin_family = AF_INET;
-//    sin.sin_port = htons(port);
-//    sin.sin_addr.s_addr = resolveHostName(std::string([remoteIPAddress UTF8String])).s_addr;
-//
-//    int result = srt_connect(_socket, (struct sockaddr *)&sin, sizeof sin);
-//    if (result == SRT_ERROR) {
-//        NSLog(@"failed to connect");
-//        cout << "srt_setsockopt: " << srt_getrejectreason(_socket) << endl;
-//        return NO;
-//    }
-//
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        [self startListen];
-//    });
-    self.remoteAddress = address;
-
-    return YES;
-}
-
-- (void)startListen {
-
-}
-
-- (void)sendMessage:(NSString *)message {
-    int result = srt_send(_socket, [message UTF8String], int([message length]));
-    if (result == SRT_ERROR) {
-        NSLog(@"failed to connect");
-        cout << "srt_setsockopt: " << srt_getlasterror_str() << endl;
-    }
-}
-
-- (void)sendFile {
-    SRT_TRANSTYPE tt = SRTT_FILE;
-    srt_setsockopt(_socket, 0, SRTO_TRANSTYPE, &tt, sizeof tt);
-
-    srt_listen(_socket, 10);
-
-    sockaddr_storage clientaddr;
-    int addrlen = sizeof(clientaddr);
-
-    SRTSOCKET fhandle;
-
-    while (true)
-    {
-       if (SRT_INVALID_SOCK == (fhandle = srt_accept(_socket, (sockaddr*)&clientaddr, &addrlen)))
-       {
-          cout << "accept: " << srt_getlasterror_str() << endl;
-       }
-
-       char clienthost[NI_MAXHOST];
-       char clientservice[NI_MAXSERV];
-       getnameinfo((sockaddr *)&clientaddr, addrlen, clienthost, sizeof(clienthost), clientservice, sizeof(clientservice), NI_NUMERICHOST|NI_NUMERICSERV);
-       cout << "new connection: " << clienthost << ":" << clientservice << endl;
-
-//        CreateThread(NULL, 0, sendfile, new SRTSOCKET(fhandle), 0, NULL);
-    }
-}
-
-- (void)receiveFile {
-    NSString *address = self.remoteAddress;
     if (address == nil || [address isEqualToString:@""]) {
         NSLog(@"failed to get ip address");
+        return NO;
     }
     NSArray *array = [address componentsSeparatedByString:@":"];
     if ([array count] < 2) {
         NSLog(@"failed to get ip address");
+        return NO;
     }
     NSString *remoteIPAddress = [array firstObject];
     unsigned short port = [[array lastObject] intValue];
@@ -236,13 +162,72 @@ struct in_addr resolveHostName(const std::string& name) {
     sin.sin_port = htons(port);
     sin.sin_addr.s_addr = resolveHostName(std::string([remoteIPAddress UTF8String])).s_addr;
 
-    SRT_TRANSTYPE tt = SRTT_FILE;
-    srt_setsockopt(_socket, 0, SRTO_TRANSTYPE, &tt, sizeof tt);
-
-    int result = srt_connect(_socket, (struct sockaddr *)&sin, sizeof sin);
+    self.remoteAddress = address;
+    _connectSocket = srt_create_socket();
+    int result = srt_connect(_connectSocket, (struct sockaddr *)&sin, sizeof sin);
     if (result == SRT_ERROR) {
         NSLog(@"failed to connect");
-        cout << "srt_setsockopt: " << srt_getrejectreason(_socket) << endl;
+        cout << "srt_setsockopt: " << srt_getrejectreason(_connectSocket) << endl;
+        return NO;
+    }
+    _isConnect = YES;
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self startReceiveMessage];
+    });
+
+    return YES;
+}
+
+- (void)startListen {
+    srt_listen(_socket, 10);
+
+    sockaddr_storage clientaddr;
+    int addrlen = sizeof(clientaddr);
+    SRTSOCKET socket;
+
+    while (true) {
+        if (SRT_INVALID_SOCK == (socket = srt_accept(_socket, (sockaddr*)&clientaddr, &addrlen)))
+        {
+            cout << "accept: " << srt_getlasterror_str() << endl;
+            return;
+        }
+
+        if (_isConnect) {
+            break;
+        }
+
+        _connectSocket = socket;
+        _isConnect = YES;
+        [self startReceiveMessage];
+        break;
+    }
+}
+
+- (void)startReceiveMessage {
+    char data[1500];
+    while (true)
+    {
+        int ret = srt_recvmsg(_connectSocket, data, sizeof(data));
+        if (SRT_ERROR == ret)
+        {
+            // EAGAIN for SRT READING
+            if (SRT_EASYNCRCV != srt_getlasterror(NULL))
+            {
+                cout << "srt_recvmsg: " << srt_getlasterror_str() << endl;
+                return;
+            }
+            break;
+        }
+        cout << ret << " bytes received: " << data << endl;
+    }
+}
+
+- (void)sendMessage:(NSString *)message {
+    int result = srt_send(_connectSocket, [message UTF8String], int([message length]));
+    if (result == SRT_ERROR) {
+        NSLog(@"failed to connect");
+        cout << "srt_setsockopt: " << srt_getlasterror_str() << endl;
     }
 }
 
